@@ -7,9 +7,7 @@ class Person(object):
         #Site count는 필요한 시점에 구하도록하자.
 
     def interprete_order(self,order): #order 는 문자열들의 리스트
-        pass
-    "add naver das7177 asdasdinr12 none_add"
-    "add naver"
+        print("print is",order)
 
     def print_site_list(self):
         for site in self.sites:
@@ -20,7 +18,7 @@ class Person(object):
             return False
         return True
 
-    def get_index_of_site_name(self, site_name):
+    def get_index_of_site_name(self, site_name): #사이트 이름을 받아 인덱스 (없으면 -1) 반환 
         try:
             return next(i for i, site in enumerate(self.sites) if site.site_name == site_name)
         except:
