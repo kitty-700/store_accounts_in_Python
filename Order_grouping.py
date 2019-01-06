@@ -23,3 +23,6 @@ def tokenizer(order_string, packing_char): #문자열 받아서 리스트로 잘
         # -> order_token : ["add", "A and B"]
         order_string = cutted_right_string[second_packing_char_index+1:]
         # -> order_string : " C"
+        
+if __name__ == "__main__":
+    print("Main.py 를 실행해주세요.")

@@ -4,25 +4,45 @@ NONEXISTENT = -1
 class Person(object):
     def __init__(self):
         self.sites = []
-        #Site count는 필요한 시점에 구하도록하자.
+        #site count는 필요한 시점에 구하도록하자.
 
     def interprete_order(self,order): #order 는 문자열들의 리스트
-        print("print is",order)
+        otc = len(order) #otc?  order_token_count, 즉 order 의 토큰화된 개수
+        if order[0] == "add":
+            if otc == 2: #["add", "naver"]
+                self.add_site(order[1])
+            elif otc == 4 or otc == 5: #["add", "naver", "mcdonald37", "qlalfqjsgh213123@"]
+                if get_index_of_site_name(order[1]) == NONEXISTENT:
+                    self.add_site(order[1])
+                self.pass_operation_to_site(order[1], order)
+            else:
+                print("add 명령에 지원되지 않는 명령어 양식입니다.")
+        elif order[0] == "del":
+            pass
+        elif order[0] == "update":
+            pass
+        elif order[0] == "ls":
+            self.print_site_list()
+        else:
+            pass
 
     def print_site_list(self):
+        i = 1
         for site in self.sites:
-            print(site.site_name)
+            account_count = site.get_account_count()
+            print("[" + str(i) + "]",site.site_name, "    (", account_count,"계정 보유 중 )")
+            i+=1
 
     def is_duplicated_site_name(self, site_name):
         if self.get_index_of_site_name(site_name) == NONEXISTENT:
             return False
         return True
 
-    def get_index_of_site_name(self, site_name): #사이트 이름을 받아 인덱스 (없으면 -1) 반환 
+    def get_index_of_site_name(self, site_name): #사이트 이름을 받아 인덱스 (없으면 -1) 반환
         try:
             return next(i for i, site in enumerate(self.sites) if site.site_name == site_name)
         except:
-            return -1
+            return NONEXISTENT
 
     def add_site(self, site_name):
         if (self.is_duplicated_site_name(site_name)) == True: 
