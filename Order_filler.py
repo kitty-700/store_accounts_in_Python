@@ -1,30 +1,62 @@
-import Person as pr
+OUT_OF_SITE = -1
+OUT_OF_SITE_MESSAGE = "ê·¸ëŸ° ë²ˆí˜¸ë¥¼ ê°€ì§„ ì‚¬ì´íŠ¸ëŠ” ì—†ìŠµë‹ˆë‹¤."
+
 
 def order_filler(person, order_type):
-	if order[0] == "add":
-		add_filler(person)
-	elif order[0] == "del":
-		del_filler(person)
-	elif order[0] == "update":
-		pass
-	
+    order = [order_type]
+    thing_to_add = []
+    if order_type == "add":
+        thing_to_add = add_filler(person)
+    elif order_type == "del":
+        thing_to_add = del_filler(person)
+    elif order_type == "update":
+        thing_to_add = update_filler(person)
+    if thing_to_add is None:
+        return None
+    return order + thing_to_add
+
 def select_site_menu(person, guide, zero_selection_event):
-	print(guide)
-	print(zero_selection_event)
-	person.print_site_list()
-	select = input("¼±ÅÃ")
-	return select
+    print(guide)
+    print(zero_selection_event)
+    person.print_site_list()
+    select = int(input("ì„ íƒ > "))
+    if select > person.get_site_count() or select < 0:
+        return OUT_OF_SITE
+    return select
 
+
+# ##### ADD #####
 def add_filler(person):
-	select = select_site_menu(person,
-		"°èÁ¤À» Ãß°¡ÇÏ°íÀÚ ÇÏ´Â »çÀÌÆ®ÀÇ ¹øÈ£¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä.",
-		"[00] »çÀÌÆ® Ãß°¡")
-def del_filler(person):
-	select = select_site_menu(person,
-		"»çÀÌÆ® ÀÚÃ¼ È¤Àº °èÁ¤À» »èÁ¦ÇÏ°íÀÚ ÇÏ´Â »çÀÌÆ®ÀÇ ¹øÈ£¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä.",
-		"[00] µ¿ÀÛ Ãë¼Ò")
-def update_filler(person):
-	select = select_site_menu(person,
-		"»çÀÌÆ® ÀÌ¸§ È¤Àº °èÁ¤ ¼Ó¼ºÀ» º¯°æÇÏ°íÀÚ ÇÏ´Â »çÀÌÆ®ÀÇ ¹øÈ£¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä.",
-		"[00] µ¿ÀÛ Ãë¼Ò")
+    select = select_site_menu(person,
+                              "ê³„ì •ì„ ì¶”ê°€í•˜ê³ ì í•˜ëŠ” ì‚¬ì´íŠ¸ì˜ ë²ˆí˜¸ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”.",
+                              "[00] ì‚¬ì´íŠ¸ ì¶”ê°€")
+    if select == OUT_OF_SITE:
+        print(OUT_OF_SITE_MESSAGE)
+        return None
+    elif select == 0:
+        return [add_site_filler(person)]
+    else:
+        site = person.get_site_by_number(select)
+        return [add_account_filler(site)]
 
+def add_site_filler(person):
+    return input("ìƒˆ ì‚¬ì´íŠ¸ ì´ë¦„ > ")
+def add_account_filler(site):
+    return None
+
+def del_filler(person):
+    select = select_site_menu(person,
+                              "ì‚¬ì´íŠ¸ ìì²´ í˜¹ì€ ê³„ì •ì„ ì‚­ì œí•˜ê³ ì í•˜ëŠ” ì‚¬ì´íŠ¸ì˜ ë²ˆí˜¸ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”.",
+                              "[00] ë™ì‘ ì·¨ì†Œ")
+    if select == OUT_OF_SITE:
+        print(OUT_OF_SITE_MESSAGE)
+        return
+
+
+def update_filler(person):
+    select = select_site_menu(person,
+                              "ì‚¬ì´íŠ¸ ì´ë¦„ í˜¹ì€ ê³„ì • ì†ì„±ì„ ë³€ê²½í•˜ê³ ì í•˜ëŠ” ì‚¬ì´íŠ¸ì˜ ë²ˆí˜¸ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”.",
+                              "[00] ë™ì‘ ì·¨ì†Œ")
+    if select == OUT_OF_SITE:
+        print(OUT_OF_SITE_MESSAGE)
+        return
