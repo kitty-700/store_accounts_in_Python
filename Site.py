@@ -4,7 +4,7 @@ class Site(object):
         self.site_name = "§_uninit_Site_name"
         self.accounts = []
         #Account count는 필요한 시점에 구하도록하자.
-    def interprete_order(order):
+    def interprete_order(self,order):
         pass
     def get_account_count(self):
         i = 0

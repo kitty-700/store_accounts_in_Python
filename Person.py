@@ -1,4 +1,5 @@
 import Site as st
+import Order_filler as of
 NONEXISTENT = -1
 
 class Person(object):
@@ -8,11 +9,16 @@ class Person(object):
 
     def interprete_order(self,order): #order 는 문자열들의 리스트
         otc = len(order) #otc?  order_token_count, 즉 order 의 토큰화된 개수
+        if otc == 1 and order[0] in ["add","delete","update"]:
+            order = of.order_filler(order[0])
         if order[0] == "add":
-            if otc == 2: #["add", "naver"]
+            if otc == 2: 
+                #["add", "naver"]
                 self.add_site(order[1])
-            elif otc == 4 or otc == 5: #["add", "naver", "mcdonald37", "qlalfqjsgh213123@"]
-                if get_index_of_site_name(order[1]) == NONEXISTENT:
+            elif otc in [4, 5]: 
+                #["add", "naver", "mcdonald37", "qlalfqjsgh213123@"]
+                #["add", "naver", "mcdonald37", "qlalfqjsgh213123@", "this account is main"]
+                if self.get_index_of_site_name(order[1]) == NONEXISTENT:
                     self.add_site(order[1])
                 self.pass_operation_to_site(order[1], order)
             else:
@@ -30,7 +36,7 @@ class Person(object):
         i = 1
         for site in self.sites:
             account_count = site.get_account_count()
-            print("[" + str(i) + "]",site.site_name, "    (", account_count,"계정 보유 중 )")
+            print("[" + str(i).zfill(2) + "]",site.site_name, "    (", account_count,"계정 보유 중 )")
             i+=1
 
     def is_duplicated_site_name(self, site_name):
