@@ -3,7 +3,6 @@ import Order_filler as of
 
 NONEXISTENT = -1
 CANCEL = "*(!CANCLE!)*"
-POS_OT = 0  # position of order type
 
 
 class Person(object):
@@ -11,14 +10,10 @@ class Person(object):
         self.sites = []
 
     def interprete_order(self, order):  # order 는 문자열들의 리스트
-        otc = len(order)  # otc?  order_token_count, 즉 order 의 토큰화된 개수
-        if otc == 1 and order[POS_OT] in ["add", "delete", "update"]:
-            order = of.order_filler(self, order[POS_OT])
-            if CANCEL in order:
-                return
-            otc = len(order)  # 명령어가 채워졌으니 다시 계산한다.
-            print("order will be excuted is", order)
-
+        (order, otc) = of.fill_the_order_if_unfilled(self, order)
+        if CANCEL in order:
+            return
+        print("order will be excuted is", order)
         # add
         if order[0] == "add":
             if otc in [2]:
@@ -122,7 +117,7 @@ class Person(object):
             return
         self.sites[site_index].site_name = new_site_name
 
-    # 나머지 작업은 Site 클래스에 넘긴다.#
+# 나머지 작업은 Site 클래스에 넘긴다.#
     def pass_operation_to_site(self, order):
         site_index = self.get_index_of_site_name(order[1])
         if site_index == NONEXISTENT:

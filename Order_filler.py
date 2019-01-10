@@ -7,10 +7,22 @@ OUT_OF_ACCOUNT = -2
 OUT_OF_ACCOUNT_MESSAGE = "그런 번호를 가진 계정는 없습니다."
 OUT_OF_INT_STRING = -3
 OUT_OF_INT_STRING_MESSAGE = "문자열에 숫자 외의 문자가 포함되어있습니다."
+CANCEL_INT = -4
 CANCEL = "*(!CANCLE!)*"
 CANCEL_MESSAGE = "동작을 취소합니다."
 
+POS_OT = 0  # position of order type
 
+def fill_the_order_if_unfilled(person, order):
+    otc = len(order)  # otc?  order_token_count, 즉 order 의 토큰화된 개수
+    if otc == 1 and order[POS_OT] in ["add", "delete", "update"]:
+        order = order_filler(person, order[POS_OT])
+        if CANCEL in order:
+            return (CANCEL, CANCEL_INT)
+        otc = len(order)
+        return (order,otc)
+    else:
+        return (order, otc)
 def order_filler(person, order_type):
     order = [order_type]
     additional_order = []
