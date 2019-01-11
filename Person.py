@@ -10,8 +10,8 @@ class Person(object):
         self.sites = []
 
     def interprete_order(self, order):  # order 는 문자열들의 리스트
-        (order, otc) = of.fill_the_order_if_unfilled(self, order)
-        if CANCEL in order:
+        (order, otc, control) = of.fill_the_order_if_unfilled(self, order)
+        if control == CANCEL:
             return
         print("order will be excuted is", order)
         # add
